@@ -59,6 +59,19 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
 .md{background:#fff;border-radius:12px;padding:22px;width:100%;max-width:460px;max-height:90vh;overflow:auto}
 .md h3{margin:0 0 6px;font-size:18px}
 .md textarea{height:260px}
+.tm{margin:26px auto 0;padding:14px 12px;background:#fff;border:1px solid #e1e1e5;border-radius:10px}
+.tm .lbl{font-size:12px;font-weight:600;color:#666;letter-spacing:.04em;text-transform:uppercase}
+.tmv{font-size:38px;font-weight:700;margin:4px 0 10px;font-variant-numeric:tabular-nums;color:#111}
+.tmv.warn{color:#d9822b}.tmv.end{color:#d32f2f}
+.tms{display:flex;gap:10px;justify-content:center;margin-bottom:10px}
+.tms label{font-size:12px;font-weight:600;color:#555;text-align:left}
+.tms input{display:block;width:76px;margin-top:4px;padding:8px 8px;border:1px solid #ccc;border-radius:7px;font:600 16px 'Manrope',sans-serif;text-align:center}
+.tms input:disabled{background:#f0f0f2;color:#888}
+.tmb{display:flex;gap:8px}
+.tmb button{flex:1;font:600 14px 'Manrope',sans-serif;padding:10px 8px;border-radius:8px;border:1.5px solid #4a7de8;background:#fff;color:#4a7de8;cursor:pointer}
+.tmb button.p{background:#4a7de8;color:#fff}
+.tmb button:disabled{opacity:.4;cursor:default}
+.tnote{display:none;background:#fdecea;color:#b3261e;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:600;margin-bottom:10px}
 @media(max-width:820px){
  .app{flex-direction:column}.side{width:100%;padding:28px 16px}.av{width:64px;height:64px;line-height:64px;font-size:42px}
  .nm{margin-top:14px}.to{margin-top:18px}.grid{margin-top:26px}.sc{margin-top:22px;font-size:22px}
@@ -77,6 +90,15 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
   <div class="em" id="em"></div>
   <div class="to" id="to"></div>
   <div class="sub" id="sub"></div>
+  <div class="tm">
+   <div class="lbl" id="tst">Timer</div>
+   <div class="tmv" id="tmv">30:00</div>
+   <div class="tms" id="tms">
+    <label>Menit<input id="tmin" type="number" min="0" max="999" inputmode="numeric" value="30"></label>
+    <label>Detik<input id="tsec" type="number" min="0" max="59" inputmode="numeric" value="0"></label>
+   </div>
+   <div class="tmb"><button class="p" id="tgo">Mulai</button><button id="trs">Reset</button></div>
+  </div>
   <div class="grid" id="grid"></div>
   <div class="sc">Terjawab: <span id="ter">0</span><br>Kosong: <span id="kos">0</span></div>
   <button class="fin" id="fin">Selesai &amp; Salin Jawaban</button>
@@ -94,6 +116,7 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
 </div>
 <div class="ov" id="ov"><div class="md">
  <h3>Jawabanmu</h3>
+ <div class="tnote" id="tnote">⏰ Waktu habis!</div>
  <div class="lb">Salin teks ini, lalu tempel ke chat</div>
  <textarea id="res" readonly></textarea>
  <div class="row" style="margin-top:12px"><button class="btn p" id="cp">Salin</button><button class="btn" id="rs">Reset jawaban</button><button class="btn" id="cl">Tutup</button></div>
@@ -116,7 +139,7 @@ B. Pilihan B
 C. Pilihan C
 D. Pilihan D
 E. Pilihan E`;
-var K='snbtsim2',D={nama:'FAIQ DK',email:'faiqdk07@gmail.com',judul:'TO UTBK 4 - 2026/2027',sub:'Pengetahuan & Pemahaman Umum',raw:SAMPLE,A:[],M:[]};
+var K='snbtsim2',D={nama:'FAIQ DK',email:'faiqdk07@gmail.com',judul:'TO UTBK 4 - 2026/2027',sub:'Pengetahuan & Pemahaman Umum',raw:SAMPLE,A:[],M:[],T:{dur:1800,rem:1800}};
 try{var s=localStorage.getItem(K);if(s)D=Object.assign(D,JSON.parse(s));}catch(e){}
 function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}}
 var $=function(i){return document.getElementById(i)},Q=[],A=[],M=[],cur=0,edit=false;
@@ -221,8 +244,8 @@ $('pv').onclick=function(){if(cur>0){cur--;soal();}};
 $('nx').onclick=function(){if(cur<Q.length-1){cur++;soal();}};
 function openEd(){edit=true;soal();$('body').scrollIntoView({behavior:'smooth'});}
 $('ed').onclick=openEd;$('ed2').onclick=openEd;
-$('fin').onclick=function(){$('res').value=hasil();$('ov').classList.add('on');};
-$('cl').onclick=function(){$('ov').classList.remove('on')};
+$('fin').onclick=function(){$('tnote').style.display='none';$('res').value=hasil();$('ov').classList.add('on');};
+$('cl').onclick=function(){$('ov').classList.remove('on');$('tnote').style.display='none'};
 $('rs').onclick=function(){if(confirm('Hapus semua jawaban?')){A=Q.map(function(){return-1});M=Q.map(function(){return false});persist();$('ov').classList.remove('on');soal();}};
 $('cp').onclick=function(){
  var t=$('res'),ok=function(){$('cp').textContent='Tersalin ✓'};
@@ -230,6 +253,66 @@ $('cp').onclick=function(){
  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.value).then(ok,function(){document.execCommand('copy')&&ok()});return}}catch(e){}
  try{document.execCommand('copy')&&ok()}catch(e){}
 };
+/* ===== TIMER (diatur & dimulai manual oleh pengguna) ===== */
+var T=D.T||{dur:1800,rem:1800},tstate='idle',tend=0,tick=null,lastSave=0;
+if(!(T.dur>0))T={dur:1800,rem:1800};
+if(!(T.rem>=0)||T.rem>T.dur)T.rem=T.dur;
+tstate=(T.rem>0&&T.rem<T.dur)?'paused':(T.rem<=0?'done':'idle');
+function pad(n){return(n<10?'0':'')+n}
+function fmtT(sec){sec=Math.max(0,Math.ceil(sec));var h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return(h?h+':'+pad(m):pad(Math.floor(sec/60)))+':'+pad(s)}
+function saveT(){D.T={dur:T.dur,rem:T.rem};save()}
+function readInputs(){
+ var m=Math.max(0,Math.min(999,parseInt($('tmin').value,10)||0)),s=Math.max(0,Math.min(59,parseInt($('tsec').value,10)||0));
+ return m*60+s;
+}
+function showInputs(){$('tmin').value=Math.floor(T.dur/60);$('tsec').value=T.dur%60}
+function tui(){
+ var v=$('tmv'),run=tstate=='running';
+ v.textContent=fmtT(T.rem);
+ v.className='tmv'+(tstate=='done'?' end':(T.rem<=60&&tstate!='idle'?' warn':''));
+ $('tmin').disabled=$('tsec').disabled=tstate!='idle';
+ $('tst').textContent={idle:'Timer — siap dimulai',running:'Timer — berjalan',paused:'Timer — dijeda',done:'Timer — waktu habis'}[tstate];
+ var g=$('tgo');
+ g.textContent={idle:'Mulai',running:'Jeda',paused:'Lanjut',done:'Mulai'}[tstate];
+ g.disabled=(tstate=='idle'&&T.dur<=0);
+ document.title=(run||tstate=='paused'?'['+fmtT(T.rem)+'] ':'')+'Simulasi TO UTBK';
+}
+function beep(){
+ try{
+  var C=window.AudioContext||window.webkitAudioContext,a=new C(),t=a.currentTime;
+  [0,0.35,0.7].forEach(function(d){var o=a.createOscillator(),g=a.createGain();o.frequency.value=880;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(0.2,t+d);g.gain.exponentialRampToValueAtTime(0.001,t+d+0.25);o.start(t+d);o.stop(t+d+0.3)});
+ }catch(e){}
+}
+function timeUp(){
+ clearInterval(tick);tick=null;tstate='done';T.rem=0;saveT();tui();beep();
+ try{if(navigator.vibrate)navigator.vibrate([300,150,300])}catch(e){}
+ $('res').value=hasil();$('tnote').style.display='block';$('ov').classList.add('on');
+}
+function loop(){
+ T.rem=(tend-Date.now())/1000;
+ if(T.rem<=0){timeUp();return}
+ var n=Date.now();if(n-lastSave>1000){lastSave=n;saveT()}
+ tui();
+}
+function tstart(){
+ if(tstate=='done'||tstate=='idle'&&T.rem<=0)T.rem=T.dur;
+ if(tstate=='idle'){T.dur=readInputs();if(T.dur<=0)return;T.rem=T.dur;showInputs()}
+ tend=Date.now()+T.rem*1000;tstate='running';
+ clearInterval(tick);tick=setInterval(loop,250);saveT();tui();
+}
+function tpause(){clearInterval(tick);tick=null;T.rem=Math.max(0,(tend-Date.now())/1000);tstate='paused';saveT();tui()}
+function treset(){
+ if(tstate=='running'||tstate=='paused'){if(!confirm('Reset timer ke awal?'))return}
+ clearInterval(tick);tick=null;tstate='idle';
+ if(T.dur<=0)T.dur=1800;T.rem=T.dur;showInputs();saveT();tui();
+}
+$('tgo').onclick=function(){if(tstate=='running')tpause();else tstart()};
+$('trs').onclick=treset;
+function onSet(){if(tstate!='idle')return;T.dur=readInputs();T.rem=T.dur;saveT();tui()}
+$('tmin').oninput=$('tsec').oninput=onSet;
+$('tmin').onchange=$('tsec').onchange=function(){if(tstate=='idle'){showInputs()}};
+showInputs();tui();
+
 load();soal();
 </script>
 </body>
