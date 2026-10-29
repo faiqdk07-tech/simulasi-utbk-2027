@@ -16,14 +16,14 @@ body{margin:0;min-height:100vh;background:#f2f2f2;font-family:'Manrope',system-u
 .em{font-size:13px;margin-top:10px}
 .to{font-size:16px;font-weight:600;margin-top:36px}
 .sub{font-size:13px;margin-top:14px}
-.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px 14px;margin:36px auto 0;width:max-content}
-.nb{position:relative;width:40px;height:40px;border:1.5px solid #333;border-radius:7px;background:#fff;font:500 15px 'Manrope',sans-serif;box-shadow:0 2px 4px rgba(0,0,0,.18);cursor:pointer;padding:0;color:#111}
-.nb .b{position:absolute;top:-8px;right:-8px;width:18px;height:18px;border-radius:50%;background:#8e8e8e;color:#fff;font-size:11px;line-height:18px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px 12px;margin:32px auto 0;width:max-content}
+.nb{position:relative;width:35px;height:35px;border:1.5px solid #333;border-radius:6px;background:#fff;font:500 14px 'Manrope',sans-serif;box-shadow:0 2px 3px rgba(0,0,0,.18);cursor:pointer;padding:0;color:#111}
+.nb .b{position:absolute;top:-7px;right:-7px;width:16px;height:16px;border-radius:50%;background:#8e8e8e;color:#fff;font-size:10px;line-height:16px;font-weight:700}
 .nb.done{background:#3fbf6b;border-color:#228a49;color:#fff}
 .nb.done .b{background:#1f9d4d}
 .nb.cur{background:#4a7de8;border-color:#2f5fc7;color:#fff}
-.nb.cur.done{background:#3fbf6b;border-color:#228a49;outline:3px solid #4a7de8;outline-offset:1px}
-.nb.mark::after{content:"";position:absolute;left:-1px;bottom:-1px;width:0;height:0;border-left:12px solid #f5a623;border-top:12px solid transparent;border-bottom-left-radius:6px}
+.nb.cur.done{background:#3fbf6b;border-color:#228a49;outline:2px solid #4a7de8;outline-offset:1px}
+.nb.mark::after{content:"";position:absolute;left:-1px;bottom:-1px;width:0;height:0;border-left:10px solid #f5a623;border-top:10px solid transparent;border-bottom-left-radius:6px}
 .sc{margin-top:32px;font-size:15px;font-weight:600;line-height:1.5}
 .fin{margin-top:22px;font:600 15px 'Manrope',sans-serif;padding:11px 18px;border-radius:8px;border:0;background:#4a7de8;color:#fff;cursor:pointer;width:100%}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -242,10 +242,11 @@ function editor(){
  $('body').innerHTML='<div class="f"><label>Subject<input id="f1" value="'+ea(D.subject)+'"></label><label>Subchapter<input id="f2" value="'+ea(D.subchapter)+'"></label><label>Kode<input id="f3" value="'+ea(D.kode)+'"></label></div>'
  +'<div class="lb">Daftar soal (tempel di sini)</div><textarea id="ta" spellcheck="false"></textarea>'
  +'<div class="gd">Format: <code>Teks:</code> bacaan (boleh kosong atau banyak baris; <code>Teks: =</code> artinya sama dengan soal sebelumnya), <code>Soal:</code> pertanyaan, lalu pilihan <code>A.</code> <code>B.</code> <code>C.</code> dst. Pisahkan antarsoal dengan baris <code>---</code>. Miring: <code>*teks*</code>, tebal: <code>**teks**</code>. Format sederhana juga bisa: <code>1. pertanyaan</code> lalu pilihan <code>A.</code> <code>B.</code> dst (tanpa kata Soal). Cek angka “soal terbaca” di bawah sebelum klik Terapkan. Gambar: tulis <code>Gambar: https://alamat-gambar.png</code> atau <code>![](alamat-gambar)</code>, atau tempel kode <code>&lt;svg&gt;…&lt;/svg&gt;</code> langsung. Benar/Salah: tulis tiap pernyataan di baris sendiri diawali <code>BS:</code> (atau diakhiri <code>(Benar/Salah)</code>). Isian: tulis <code>Soal:</code> saja tanpa pilihan A. B. C. Tip: minta Claude membuat soal dalam format ini, lalu tempel.</div>'
- +'<div class="row"><button class="btn p" id="ap">Terapkan &amp; Mulai</button><button class="btn" id="bt">Batal</button><span class="cnt" id="ct"></span></div>';
+ +'<div class="row"><button class="btn p" id="ap">Terapkan &amp; Mulai</button><button class="btn" id="bt">Batal</button><button class="btn" id="cx" style="color:#c62828;border-color:#c62828">🗑 Hapus teks</button><span class="cnt" id="ct"></span></div>';
  var ta=$('ta');ta.value=dec(D.raw);
  var cnt=function(){$('ct').textContent=parse(ta.value).length+' soal terbaca'};cnt();ta.oninput=cnt;
  $('bt').onclick=function(){edit=false;soal()};
+ $('cx').onclick=function(){ta.focus();ta.select();var ok=false;try{ok=document.execCommand('delete')}catch(e){}if(!ok||ta.value)ta.value='';ta.scrollTop=0;cnt();ta.focus()};
  $('ap').onclick=function(){
   var nn=parse(ta.value).length;
   if(!nn){$('ct').innerHTML='<b style="color:#c00">0 soal terbaca ('+ta.value.length+' karakter, '+ta.value.split('\n').length+' baris; awal teks: “'+esc(ta.value.slice(0,50))+'”). Tempel soal di kolom besar ini, pakai Soal: lalu pilihan A. B. C.</b>';return}
