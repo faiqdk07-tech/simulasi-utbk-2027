@@ -122,7 +122,9 @@ function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}}
 var $=function(i){return document.getElementById(i)},Q=[],A=[],M=[],cur=0,edit=false;
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<i>$1</i>').replace(/\n/g,'<br>')}
+function dec(s){if((s.match(/%[0-9A-Fa-f]{2}/g)||[]).length<5)return s;return s.replace(/(?:%[0-9A-Fa-f]{2})+/g,function(m){try{return decodeURIComponent(m)}catch(e){return m}})}
 function parse(raw){
+ raw=dec(raw);
  var out=[],prev='',c=null;
  raw=raw.replace(/\r\n|\r|[\u2028\u2029\u0085]/g,'\n');
  var ns=(raw.match(/Soal\s*[:：]/gi)||[]).length;
@@ -192,14 +194,14 @@ function editor(){
  +'<div class="lb">Daftar soal (tempel di sini)</div><textarea id="ta" spellcheck="false"></textarea>'
  +'<div class="gd">Format: <code>Teks:</code> bacaan (boleh kosong atau banyak baris; <code>Teks: =</code> artinya sama dengan soal sebelumnya), <code>Soal:</code> pertanyaan, lalu pilihan <code>A.</code> <code>B.</code> <code>C.</code> dst. Pisahkan antarsoal dengan baris <code>---</code>. Miring: <code>*teks*</code>, tebal: <code>**teks**</code>. Format sederhana juga bisa: <code>1. pertanyaan</code> lalu pilihan <code>A.</code> <code>B.</code> dst (tanpa kata Soal). Cek angka “soal terbaca” di bawah sebelum klik Terapkan. Tip: minta Claude membuat soal dalam format ini, lalu tempel.</div>'
  +'<div class="row"><button class="btn p" id="ap">Terapkan &amp; Mulai</button><button class="btn" id="bt">Batal</button><span class="cnt" id="ct"></span></div>';
- var ta=$('ta');ta.value=D.raw;
+ var ta=$('ta');ta.value=dec(D.raw);
  var cnt=function(){$('ct').textContent=parse(ta.value).length+' soal terbaca'};cnt();ta.oninput=cnt;
  $('bt').onclick=function(){edit=false;soal()};
  $('ap').onclick=function(){
   var nn=parse(ta.value).length;
   if(!nn){$('ct').innerHTML='<b style="color:#c00">0 soal terbaca ('+ta.value.length+' karakter, '+ta.value.split('\n').length+' baris; awal teks: “'+esc(ta.value.slice(0,50))+'”). Tempel soal di kolom besar ini, pakai Soal: lalu pilihan A. B. C.</b>';return}
   D.nama=$('f1').value;D.email=$('f2').value;D.judul=$('f3').value;D.sub=$('f4').value;
-  if(ta.value!==D.raw){D.raw=ta.value;D.A=[];D.M=[];cur=0}
+  if(dec(ta.value)!==D.raw){D.raw=dec(ta.value);D.A=[];D.M=[];cur=0}
   load();save();edit=false;soal();
  };
 }
