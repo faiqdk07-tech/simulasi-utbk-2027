@@ -12,8 +12,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;min-height:100vh;background:#f2f2f2;font-family:'Manrope',system-ui,sans-serif;color:#111;padding:12px}
 .app{max-width:1180px;margin:0 auto;display:flex;background:#fff;border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,.08);overflow:hidden;min-height:calc(100vh - 24px);min-height:calc(100dvh - 24px)}
 .side{width:300px;flex:none;background:#f7f7f8;padding:56px 20px 24px;text-align:center}
-.av{width:84px;height:84px;margin:0 auto;background:#3a86cc;border:1px solid #1d4f82;border-radius:6px;color:#fff;font-size:56px;line-height:84px;font-weight:500}
-.nm{font-size:20px;font-weight:600;margin-top:28px}
+.nm{font-size:20px;font-weight:600}
 .em{font-size:13px;margin-top:10px}
 .to{font-size:16px;font-weight:600;margin-top:36px}
 .sub{font-size:13px;margin-top:14px}
@@ -25,14 +24,14 @@ body{margin:0;min-height:100vh;background:#f2f2f2;font-family:'Manrope',system-u
 .nb.cur{background:#4a7de8;border-color:#2f5fc7;color:#fff}
 .nb.cur.done{background:#3fbf6b;border-color:#228a49;outline:3px solid #4a7de8;outline-offset:1px}
 .nb.mark::after{content:"";position:absolute;left:-1px;bottom:-1px;width:0;height:0;border-left:12px solid #f5a623;border-top:12px solid transparent;border-bottom-left-radius:6px}
-.sc{margin-top:36px;font-size:26px;font-weight:600;line-height:1.35}
+.sc{margin-top:32px;font-size:15px;font-weight:600;line-height:1.5}
 .fin{margin-top:22px;font:600 15px 'Manrope',sans-serif;padding:11px 18px;border-radius:8px;border:0;background:#4a7de8;color:#fff;cursor:pointer;width:100%}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
-.top{height:104px;border-bottom:1px solid #e4e4e4;position:relative;text-align:center;padding-top:20px;flex:none}
+.top{height:88px;border-bottom:1px solid #e4e4e4;position:relative;text-align:center;padding:0 24px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
 .top small{font-size:14px;display:block}
-.top b{font-size:26px;font-weight:600;display:block;margin-top:6px}
-.bm{position:absolute;left:38px;top:20px;background:none;border:0;cursor:pointer;padding:0}
-.bm svg{width:40px;height:44px}
+.top b{font-size:26px;font-weight:600;display:block;margin-top:4px;line-height:1.1}
+.bm{justify-self:start;align-self:center;background:none;border:0;cursor:pointer;padding:0;display:flex}
+.bm svg{width:24px;height:26px}
 .ed{display:none;z-index:2;position:absolute;right:24px;top:30px;font:600 14px 'Manrope',sans-serif;padding:8px 14px;border-radius:8px;border:1.5px solid #999;background:#fff;color:#444;cursor:pointer}
 .body{padding:48px 68px 28px;flex:1}
 .txt{text-align:justify;font-size:17.5px;line-height:1.65;margin:0 0 48px}
@@ -59,23 +58,29 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
 .md{background:#fff;border-radius:12px;padding:22px;width:100%;max-width:460px;max-height:90vh;overflow:auto}
 .md h3{margin:0 0 6px;font-size:18px}
 .md textarea{height:260px}
-.tm{position:absolute;right:24px;top:12px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.tmh{display:flex;align-items:baseline;gap:8px}
-.tmh .lbl{font-size:12px;font-weight:600;color:#777}
-.tmv{font-size:28px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums;color:#111}
+.tm{justify-self:end;align-self:center;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.tmh{display:flex;align-items:baseline;gap:6px}
+.tmh .lbl{font-size:10px;font-weight:600;color:#777}
+.tmv{font-size:19px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums;color:#111}
 .tmv.warn{color:#d9822b}.tmv.end{color:#d32f2f}
-.tmr{display:flex;align-items:center;gap:6px}
-.tms{display:flex;align-items:center;gap:3px;font-weight:700;color:#777}
-.tms input{width:52px;padding:6px 4px;border:1px solid #ccc;border-radius:7px;font:600 14px 'Manrope',sans-serif;text-align:center;background:#fff;color:#111}
+.tmr{display:flex;align-items:center;gap:4px}
+.tms{display:flex;align-items:center;gap:2px;font-size:12px;font-weight:700;color:#777}
+.tms input{width:40px;padding:3px 2px;border:1px solid #ccc;border-radius:5px;font:600 12px 'Manrope',sans-serif;text-align:center;background:#fff;color:#111}
 .tms input:disabled{background:#f0f0f2;color:#888}
-.tmr button{font:600 13px 'Manrope',sans-serif;padding:7px 12px;border-radius:8px;border:1.5px solid #4a7de8;background:#fff;color:#4a7de8;cursor:pointer}
+.tmr button{font:600 11px 'Manrope',sans-serif;padding:4px 8px;border-radius:6px;border:1.5px solid #4a7de8;background:#fff;color:#4a7de8;cursor:pointer}
 .tmr button.p{background:#4a7de8;color:#fff}
 .tmr button:disabled{opacity:.4;cursor:default}
 .tnote{display:none;background:#fdecea;color:#b3261e;border-radius:8px;padding:9px 12px;font-size:13px;font-weight:600;margin-bottom:10px}
+.qi{display:block;max-width:100%;max-height:380px;height:auto;margin:10px 0;border-radius:6px}
+.bsr{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid #eee}
+.bst{flex:1;font-size:17px;line-height:1.5}
+.bsg{display:flex;gap:8px;flex:none}
+.bsb{font:600 14px 'Manrope',sans-serif;padding:8px 16px;border-radius:8px;border:1.5px solid #bbb;background:#fff;color:#444;cursor:pointer}
+.bsb.sel{background:#4a7de8;border-color:#4a7de8;color:#fff}
 @media(max-width:820px){
- .app{flex-direction:column}.side{width:100%;padding:28px 16px}.av{width:64px;height:64px;line-height:64px;font-size:42px}
- .nm{margin-top:14px}.to{margin-top:18px}.grid{margin-top:26px}.sc{margin-top:22px;font-size:22px}
- .body{padding:28px 20px}.nav{padding:0 20px 28px}.top{height:auto;padding-bottom:12px}.bm{left:16px;top:14px}.tm{position:static;align-items:center;margin:10px auto 0}.ed{right:12px;top:22px;padding:6px 10px;font-size:12px}
+ .app{flex-direction:column}.side{width:100%;padding:28px 16px} .nm{margin-top:0}.to{margin-top:18px}.grid{margin-top:26px}.sc{margin-top:20px;font-size:14px}
+ .body{padding:28px 20px}.nav{padding:0 20px 28px}.top{height:auto;min-height:72px;padding:10px 14px;grid-template-columns:auto 1fr auto}.ed{right:12px;top:22px;padding:6px 10px;font-size:12px}
+ .bsr{flex-wrap:wrap;gap:8px}.bst{min-width:100%}
  .txt,.q{font-size:16px}.o{font-size:17px}.f{grid-template-columns:1fr}
 }
 </style>
@@ -85,20 +90,17 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
 <noscript><p style="padding:12px">JavaScript dimatikan di browser ini.</p></noscript>
 <div class="app">
  <aside class="side">
-  <div class="av" id="av">F</div>
   <div class="nm" id="nm"></div>
   <div class="em" id="em"></div>
   <div class="to" id="to"></div>
-  <div class="sub" id="sub"></div>
   <div class="grid" id="grid"></div>
   <div class="sc">Terjawab: <span id="ter">0</span><br>Kosong: <span id="kos">0</span></div>
-  <button class="fin" id="fin">Selesai &amp; Salin Jawaban</button>
   <button class="fin" id="ed2" style="background:#fff;color:#4a7de8;border:1.5px solid #4a7de8;margin-top:10px">✎ Atur Soal (input soal)</button>
  </aside>
  <section class="main">
   <div class="top">
    <button class="bm" id="bm" aria-label="Tandai soal"><svg viewBox="0 0 40 44"><path id="bmp" d="M5 3h30v38L20 31 5 41z" fill="none" stroke="#111" stroke-width="4" stroke-linejoin="round"/></svg></button>
-   <small>Nomor Soal</small><b id="no">1</b>
+   <div class="ctr"><small>Nomor Soal</small><b id="no">1</b></div>
    <button class="ed" id="ed">✎ Atur Soal</button>
    <div class="tm">
     <div class="tmh"><span class="tmv" id="tmv">30:00</span><span class="lbl" id="tst">Siap</span></div>
@@ -137,17 +139,39 @@ B. Pilihan B
 C. Pilihan C
 D. Pilihan D
 E. Pilihan E`;
-var K='snbtsim2',D={nama:'FAIQ DK',email:'faiqdk07@gmail.com',judul:'TO UTBK 4 - 2026/2027',sub:'Pengetahuan & Pemahaman Umum',raw:SAMPLE,A:[],M:[],T:{dur:1800,rem:1800}};
+var K='snbtsim2',D={subject:'',subchapter:'',kode:'',raw:SAMPLE,A:[],M:[],T:{dur:1800,rem:1800}};
 try{var s=localStorage.getItem(K);if(s)D=Object.assign(D,JSON.parse(s));}catch(e){}
 function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}}
 var $=function(i){return document.getElementById(i)},Q=[],A=[],M=[],cur=0,edit=false;
+function ea(v){return esc(v||'').replace(/"/g,'&quot;')}
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<i>$1</i>').replace(/\n/g,'<br>')}
-function dec(s){if((s.match(/%[0-9A-Fa-f]{2}/g)||[]).length<5)return s;return s.replace(/(?:%[0-9A-Fa-f]{2})+/g,function(m){try{return decodeURIComponent(m)}catch(e){return m}})}
+function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<i>$1</i>').replace(/\u0001([^\u0002]*)\u0002/g,function(m,u){var src;try{src=decodeURIComponent(u)}catch(e){return ''}return '<img class="qi" src="'+src.replace(/"/g,'%22').replace(/</g,'%3C').replace(/>/g,'%3E')+'" alt="gambar soal" onerror="this.replaceWith(document.createTextNode(\'[gambar tidak dapat dimuat]\'))">'}).replace(/\n/g,'<br>')}
+function itk(src){src=(src||'').trim();if(!/^(https?:\/\/\S+|data:image\/[a-z+]+[;,]\S+|[\w.\/-]+\.(png|jpe?g|gif|webp|svg))$/i.test(src))return null;return '\u0001'+encodeURIComponent(src).replace(/\*/g,'%2A')+'\u0002'}
+function imgs(raw){
+ raw=raw.replace(/<svg[\s\S]*?<\/svg>/gi,function(m){if(!/<svg[^>]*xmlns/i.test(m))m=m.replace(/<svg/i,'<svg xmlns="http://www.w3.org/2000/svg"');return itk('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(m))});
+ raw=raw.replace(/<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi,function(m,u){return itk(u)||''});
+ raw=raw.replace(/!\[[^\]]*\]\(\s*([^)\s]+)[^)]*\)/g,function(m,u){return itk(u)||m});
+ raw=raw.replace(/^[ \t]*\(?Gambar\s*[:：]\s*(\S+)[ \t]*$/gim,function(m,u){return itk(u)||m});
+ return raw;
+}
+function bsline(l){
+ var r;
+ if(r=l.match(/^\s*\(?(?:BS|B\/S|Benar[\s\-\/]*Salah)\s*[:：]\s*(.*)$/i))return r[1].trim();
+ if(/^\s*\|/.test(l)){
+  var cells=l.split('|').map(function(x){return x.trim()}).filter(Boolean);
+  if(!cells.length||cells.every(function(x){return /^:?-{2,}:?$/.test(x)}))return '';
+  var tx=cells.filter(function(x){return !/^\d+[.)]?$/.test(x)&&!/^(benar|salah|b|s|pernyataan|no\.?|nomor|[○◯□☐✓✗xX\s]*)$/i.test(x)});
+  return tx.join(' ');
+ }
+ if(r=l.match(/^\s*(?:\d+[.)]\s+)?(.*?)\s*\((?:Benar\s*\/\s*Salah|B\s*\/\s*S|Benar\s+atau\s+Salah)\)\s*$/i))return r[1].trim();
+ return null;
+}
+function dec(s){var keep=[];s=s.replace(/data:image\/[a-z+]+[;,][^\s)"']+/gi,function(m){keep.push(m);return'\u0003'+(keep.length-1)+'\u0004'});if((s.match(/%[0-9A-Fa-f]{2}/g)||[]).length>=5)s=s.replace(/(?:%[0-9A-Fa-f]{2})+/g,function(m){try{return decodeURIComponent(m)}catch(e){return m}});return s.replace(/\u0003(\d+)\u0004/g,function(m,i){return keep[+i]})}
 function parse(raw){
  raw=dec(raw);
  var out=[],prev='',c=null;
  raw=raw.replace(/\r\n|\r|[\u2028\u2029\u0085]/g,'\n');
+ raw=imgs(raw);
  var ns=(raw.match(/Soal\s*[:：]/gi)||[]).length;
  if(ns>1&&raw.split('\n').length<ns*2){
   raw=raw.replace(/\s*(Teks|Soal)\s*[:：]/gi,'\n$1:').replace(/\s+(?=\(?[A-E][.)]\s)/g,'\n').replace(/\s*(?:-{3,}|—)\s*/g,'\n---\n');
@@ -155,36 +179,39 @@ function parse(raw){
  function push(){
   if(!c)return;
   var qq=c.q.join('\n').trim();
-  if(qq||c.o.length){var tt=c.t.join('\n').trim();if(tt=='=')tt=prev;else if(tt)prev=tt;out.push({t:tt,q:qq,o:c.o});}
+  if(qq||c.o.length||c.b.length){var tt=c.t.join('\n').trim();if(tt=='=')tt=prev;else if(tt)prev=tt;out.push({t:tt,q:qq,o:c.o,b:c.b});}
   c=null;
  }
- function nw(){push();c={m:'',t:[],q:[],o:[]};}
+ function nw(){push();c={m:'',t:[],q:[],o:[],b:[]};}
  raw.split('\n').forEach(function(l){
-  var r;
+  var r,bs;
   if(/^\s*(?:[-—–_=*]{3,}|[—–])\s*$/.test(l)){push();return}
   if(!l.trim()){if(c&&c.m=='t')c.t.push('');else if(c&&c.m=='q')c.q.push('');return}
   if(!c)nw();
   if(r=l.match(/^\s*\(?Teks\s*[:：]\s?(.*)$/i)){if(c.m=='o'||c.m=='q')nw();c.m='t';c.t.push(r[1]);}
   else if(r=l.match(/^\s*\(?Soal\s*[:：]\s?(.*)$/i)){if(c.m=='o')nw();c.m='q';c.q.push(r[1]);}
+  else if(c.m!='t'&&c.m!='o'&&(bs=bsline(l))!==null){if(bs!==''){c.m='b';c.b.push(bs);}}
   else if(c.m!='t'&&(r=l.match(/^\s*\(?([A-Ja-j])[.)]\s+(.*)$/))){c.m='o';c.o.push(r[2]);}
   else if(c.m=='o'){
    if(r=l.match(/^\s*\d+[.)]\s+(.*)$/)){nw();c.m='q';c.q.push(r[1]);}
    else if(c.o.length)c.o[c.o.length-1]+=' '+l.trim();
   }
+  else if(c.m=='b'){if(r=l.match(/^\s*\d+[.)]\s+(.*)$/))c.b.push(r[1]);else c.b[c.b.length-1]+=' '+l.trim();}
   else if(c.m=='t')c.t.push(l);
   else{c.m='q';c.q.push(l.replace(/^\s*\d+[.)]\s+/,''));}
  });
  push();
  return out;
 }
+function blank(){return Q.map(function(q){return q.b&&q.b.length?q.b.map(function(){return-1}):-1})}
 function load(){
  Q=parse(D.raw);
- A=(D.A&&D.A.length==Q.length)?D.A:Q.map(function(){return-1});
+ A=(D.A&&D.A.length==Q.length)?D.A:blank();
  M=(D.M&&D.M.length==Q.length)?D.M:Q.map(function(){return false});
  if(cur>=Q.length)cur=0;
 }
-function head(){$('nm').textContent=D.nama;$('em').textContent=D.email;$('to').textContent=D.judul;$('sub').textContent=D.sub;$('av').textContent=(D.nama||'?').charAt(0).toUpperCase()}
-function dn(i){return typeof A[i]=='string'?A[i].trim()!=='':A[i]>=0}
+function head(){$('nm').textContent=D.subject||'';$('em').textContent=D.subchapter||'';$('to').textContent=D.kode||''}
+function dn(i){var a=A[i];if(Array.isArray(a))return a.length>0&&a.every(function(x){return x>=0});return typeof a=='string'?a.trim()!=='':a>=0}
 function grid(){
  var h='',c=0;
  for(var i=0;i<Q.length;i++){
@@ -202,18 +229,19 @@ function soal(){
  if(q.t)h+='<p class="txt">'+fmt(q.t)+'</p>';
  h+='<p class="q">'+fmt(q.q)+'</p>';
  q.o.forEach(function(o,n){h+='<div class="o'+(A[cur]===n?' sel':'')+'" data-n="'+n+'"><span class="r"></span><span>'+fmt(o)+'</span></div>'});
- if(!q.o.length)h+='<input class="isi" id="isi" inputmode="decimal" autocomplete="off" placeholder="Ketik jawabanmu (angka)">';
+ if(q.b&&q.b.length){var ba=Array.isArray(A[cur])?A[cur]:[];q.b.forEach(function(st,k){h+='<div class="bsr"><div class="bst">'+fmt(st)+'</div><div class="bsg"><button class="bsb'+(ba[k]===0?' sel':'')+'" data-k="'+k+'" data-v="0">Benar</button><button class="bsb'+(ba[k]===1?' sel':'')+'" data-k="'+k+'" data-v="1">Salah</button></div></div>'})}
+ else if(!q.o.length)h+='<input class="isi" id="isi" autocomplete="off" placeholder="Ketik jawabanmu">';
  $('body').innerHTML=h;$('no').textContent=cur+1;
  var ii=$('isi');if(ii){ii.value=typeof A[cur]=='string'?A[cur]:'';ii.oninput=function(){A[cur]=ii.value.trim()===''?-1:ii.value.trim();persist();grid();};}
  $('bmp').setAttribute('fill',M[cur]?'#111':'none');
- $('pv').disabled=cur==0;$('nx').disabled=cur>=Q.length-1;
+ $('pv').disabled=cur==0;var last=cur>=Q.length-1;$('nx').disabled=false;$('nx').textContent=last?'Selesai & Salin Jawaban ✓':'Selanjutnya →';
  grid();
 }
 function editor(){
  $('nav').style.display='none';$('ed').style.display='none';$('no').textContent='✎';
- $('body').innerHTML='<div class="f"><label>Nama<input id="f1" value="'+esc(D.nama).replace(/"/g,'&quot;')+'"></label><label>Email<input id="f2" value="'+esc(D.email).replace(/"/g,'&quot;')+'"></label><label>Judul TO<input id="f3" value="'+esc(D.judul).replace(/"/g,'&quot;')+'"></label><label>Subtes<input id="f4" value="'+esc(D.sub).replace(/"/g,'&quot;')+'"></label></div>'
+ $('body').innerHTML='<div class="f"><label>Subject<input id="f1" value="'+ea(D.subject)+'"></label><label>Subchapter<input id="f2" value="'+ea(D.subchapter)+'"></label><label>Kode<input id="f3" value="'+ea(D.kode)+'"></label></div>'
  +'<div class="lb">Daftar soal (tempel di sini)</div><textarea id="ta" spellcheck="false"></textarea>'
- +'<div class="gd">Format: <code>Teks:</code> bacaan (boleh kosong atau banyak baris; <code>Teks: =</code> artinya sama dengan soal sebelumnya), <code>Soal:</code> pertanyaan, lalu pilihan <code>A.</code> <code>B.</code> <code>C.</code> dst. Pisahkan antarsoal dengan baris <code>---</code>. Miring: <code>*teks*</code>, tebal: <code>**teks**</code>. Format sederhana juga bisa: <code>1. pertanyaan</code> lalu pilihan <code>A.</code> <code>B.</code> dst (tanpa kata Soal). Cek angka “soal terbaca” di bawah sebelum klik Terapkan. Tip: minta Claude membuat soal dalam format ini, lalu tempel.</div>'
+ +'<div class="gd">Format: <code>Teks:</code> bacaan (boleh kosong atau banyak baris; <code>Teks: =</code> artinya sama dengan soal sebelumnya), <code>Soal:</code> pertanyaan, lalu pilihan <code>A.</code> <code>B.</code> <code>C.</code> dst. Pisahkan antarsoal dengan baris <code>---</code>. Miring: <code>*teks*</code>, tebal: <code>**teks**</code>. Format sederhana juga bisa: <code>1. pertanyaan</code> lalu pilihan <code>A.</code> <code>B.</code> dst (tanpa kata Soal). Cek angka “soal terbaca” di bawah sebelum klik Terapkan. Gambar: tulis <code>Gambar: https://alamat-gambar.png</code> atau <code>![](alamat-gambar)</code>, atau tempel kode <code>&lt;svg&gt;…&lt;/svg&gt;</code> langsung. Benar/Salah: tulis tiap pernyataan di baris sendiri diawali <code>BS:</code> (atau diakhiri <code>(Benar/Salah)</code>). Isian: tulis <code>Soal:</code> saja tanpa pilihan A. B. C. Tip: minta Claude membuat soal dalam format ini, lalu tempel.</div>'
  +'<div class="row"><button class="btn p" id="ap">Terapkan &amp; Mulai</button><button class="btn" id="bt">Batal</button><span class="cnt" id="ct"></span></div>';
  var ta=$('ta');ta.value=dec(D.raw);
  var cnt=function(){$('ct').textContent=parse(ta.value).length+' soal terbaca'};cnt();ta.oninput=cnt;
@@ -221,7 +249,7 @@ function editor(){
  $('ap').onclick=function(){
   var nn=parse(ta.value).length;
   if(!nn){$('ct').innerHTML='<b style="color:#c00">0 soal terbaca ('+ta.value.length+' karakter, '+ta.value.split('\n').length+' baris; awal teks: “'+esc(ta.value.slice(0,50))+'”). Tempel soal di kolom besar ini, pakai Soal: lalu pilihan A. B. C.</b>';return}
-  D.nama=$('f1').value;D.email=$('f2').value;D.judul=$('f3').value;D.sub=$('f4').value;
+  D.subject=$('f1').value;D.subchapter=$('f2').value;D.kode=$('f3').value;
   if(dec(ta.value)!==D.raw){D.raw=dec(ta.value);D.A=[];D.M=[];cur=0}
   load();save();edit=false;soal();
  };
@@ -229,22 +257,23 @@ function editor(){
 function persist(){D.A=A;D.M=M;save()}
 function hasil(){
  var L=[],c=0;
- Q.forEach(function(_,i){if(dn(i))c++;L.push((i+1)+'. '+(!dn(i)?'-':typeof A[i]=='string'?A[i]:String.fromCharCode(65+A[i])))});
- return D.judul+' | '+D.sub+'\nTerjawab: '+c+'/'+Q.length+'\n\n'+L.join('\n');
+ Q.forEach(function(_,i){if(dn(i))c++;L.push((i+1)+'. '+(Array.isArray(A[i])?(A[i].some(function(x){return x>=0})?A[i].map(function(x){return x<0?'-':x==0?'B':'S'}).join(', '):'-'):!dn(i)?'-':typeof A[i]=='string'?A[i]:String.fromCharCode(65+A[i])))});
+ return [D.kode,D.subject,D.subchapter].filter(function(x){return x&&x.trim()}).join(' | ')+'\nTerjawab: '+c+'/'+Q.length+'\n\n'+L.join('\n');
 }
 $('grid').onclick=function(e){var b=e.target.closest('.nb');if(b){edit=false;cur=+b.dataset.i;soal();}};
 $('body').onclick=function(e){
  if(edit)return;
+ var bb=e.target.closest('.bsb');if(bb){var k=+bb.dataset.k,v=+bb.dataset.v;if(!Array.isArray(A[cur]))A[cur]=Q[cur].b.map(function(){return-1});A[cur][k]=A[cur][k]===v?-1:v;persist();soal();return}
  var o=e.target.closest('.o');if(o){var n=+o.dataset.n;A[cur]=A[cur]===n?-1:n;persist();soal();}
 };
 $('bm').onclick=function(){if(edit||!Q.length)return;M[cur]=!M[cur];persist();soal();};
 $('pv').onclick=function(){if(cur>0){cur--;soal();}};
-$('nx').onclick=function(){if(cur<Q.length-1){cur++;soal();}};
+$('nx').onclick=function(){if(cur<Q.length-1){cur++;soal();}else if(Q.length){finish();}};
 function openEd(){edit=true;soal();$('body').scrollIntoView({behavior:'smooth'});}
 $('ed').onclick=openEd;$('ed2').onclick=openEd;
-$('fin').onclick=function(){$('tnote').style.display='none';$('res').value=hasil();$('ov').classList.add('on');};
+function finish(){$('tnote').style.display='none';$('res').value=hasil();$('ov').classList.add('on');}
 $('cl').onclick=function(){$('ov').classList.remove('on');$('tnote').style.display='none'};
-$('rs').onclick=function(){if(confirm('Hapus semua jawaban?')){A=Q.map(function(){return-1});M=Q.map(function(){return false});persist();$('ov').classList.remove('on');soal();}};
+$('rs').onclick=function(){if(confirm('Hapus semua jawaban?')){A=blank();M=Q.map(function(){return false});persist();$('ov').classList.remove('on');soal();}};
 $('cp').onclick=function(){
  var t=$('res'),ok=function(){$('cp').textContent='Tersalin ✓'};
  t.focus();t.select();
