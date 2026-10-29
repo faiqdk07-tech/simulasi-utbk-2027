@@ -124,6 +124,11 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<i>$1</i>').replace(/\n/g,'<br>')}
 function parse(raw){
  var out=[],prev='',c=null;
+ raw=raw.replace(/\r\n|\r|[\u2028\u2029\u0085]/g,'\n');
+ var ns=(raw.match(/Soal\s*[:：]/gi)||[]).length;
+ if(ns>1&&raw.split('\n').length<ns*2){
+  raw=raw.replace(/\s*(Teks|Soal)\s*[:：]/gi,'\n$1:').replace(/\s+(?=\(?[A-E][.)]\s)/g,'\n').replace(/\s*(?:-{3,}|—)\s*/g,'\n---\n');
+ }
  function push(){
   if(!c)return;
   var qq=c.q.join('\n').trim();
@@ -192,7 +197,7 @@ function editor(){
  $('bt').onclick=function(){edit=false;soal()};
  $('ap').onclick=function(){
   var nn=parse(ta.value).length;
-  if(!nn){$('ct').innerHTML='<b style="color:#c00">0 soal terbaca ('+ta.value.length+' karakter di kolom). Tempel soal di kolom besar ini, pakai Soal: lalu pilihan A. B. C.</b>';return}
+  if(!nn){$('ct').innerHTML='<b style="color:#c00">0 soal terbaca ('+ta.value.length+' karakter, '+ta.value.split('\n').length+' baris; awal teks: “'+esc(ta.value.slice(0,50))+'”). Tempel soal di kolom besar ini, pakai Soal: lalu pilihan A. B. C.</b>';return}
   D.nama=$('f1').value;D.email=$('f2').value;D.judul=$('f3').value;D.sub=$('f4').value;
   if(ta.value!==D.raw){D.raw=ta.value;D.A=[];D.M=[];cur=0}
   load();save();edit=false;soal();
