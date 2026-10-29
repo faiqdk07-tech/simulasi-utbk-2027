@@ -133,11 +133,11 @@ function parse(raw){
  function nw(){push();c={m:'',t:[],q:[],o:[]};}
  raw.split('\n').forEach(function(l){
   var r;
-  if(/^\s*---+\s*$/.test(l)){push();return}
+  if(/^\s*(?:[-—–_=*]{3,}|[—–])\s*$/.test(l)){push();return}
   if(!l.trim()){if(c&&c.m=='t')c.t.push('');else if(c&&c.m=='q')c.q.push('');return}
   if(!c)nw();
-  if(r=l.match(/^\s*Teks:\s?(.*)$/i)){if(c.m=='o'||c.m=='q')nw();c.m='t';c.t.push(r[1]);}
-  else if(r=l.match(/^\s*Soal:\s?(.*)$/i)){if(c.m=='o')nw();c.m='q';c.q.push(r[1]);}
+  if(r=l.match(/^\s*\(?Teks\s*[:：]\s?(.*)$/i)){if(c.m=='o'||c.m=='q')nw();c.m='t';c.t.push(r[1]);}
+  else if(r=l.match(/^\s*\(?Soal\s*[:：]\s?(.*)$/i)){if(c.m=='o')nw();c.m='q';c.q.push(r[1]);}
   else if(c.m!='t'&&(r=l.match(/^\s*\(?([A-Ja-j])[.)]\s+(.*)$/))){c.m='o';c.o.push(r[2]);}
   else if(c.m=='o'){
    if(r=l.match(/^\s*\d+[.)]\s+(.*)$/)){nw();c.m='q';c.q.push(r[1]);}
@@ -191,6 +191,8 @@ function editor(){
  var cnt=function(){$('ct').textContent=parse(ta.value).length+' soal terbaca'};cnt();ta.oninput=cnt;
  $('bt').onclick=function(){edit=false;soal()};
  $('ap').onclick=function(){
+  var nn=parse(ta.value).length;
+  if(!nn){$('ct').innerHTML='<b style="color:#c00">0 soal terbaca ('+ta.value.length+' karakter di kolom). Tempel soal di kolom besar ini, pakai Soal: lalu pilihan A. B. C.</b>';return}
   D.nama=$('f1').value;D.email=$('f2').value;D.judul=$('f3').value;D.sub=$('f4').value;
   if(ta.value!==D.raw){D.raw=ta.value;D.A=[];D.M=[];cur=0}
   load();save();edit=false;soal();
