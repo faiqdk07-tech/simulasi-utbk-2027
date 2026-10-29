@@ -83,19 +83,33 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
  .bsr{flex-wrap:wrap;gap:8px}.bst{min-width:100%}
  .txt,.q{font-size:16px}.o{font-size:17px}.f{grid-template-columns:1fr}
 }
+
+/* ===== Tata letak atas (mirip tampilan ujian asli di layar sempit) ===== */
+.app.tl{flex-direction:column}
+.app.tl .side{width:100%;padding:14px 14px 12px;display:grid;grid-template-columns:1fr auto;grid-template-areas:"nm to" "em to" "grid grid" "sc act";column-gap:12px;text-align:left;align-items:center}
+.app.tl .nm{grid-area:nm;margin:0;font-size:17px;line-height:1.25}
+.app.tl .em{grid-area:em;margin:2px 0 0;font-size:13px}
+.app.tl .to{grid-area:to;margin:0;text-align:right;font-size:15px;line-height:1.3}
+.app.tl .grid{grid-area:grid;display:flex;flex-wrap:wrap;justify-content:center;gap:14px 6px;width:100%;max-width:434px;margin:18px auto 14px}
+.app.tl .nb{flex:0 0 calc((100% - 54px)/10);width:calc((100% - 54px)/10);max-width:38px;height:auto;aspect-ratio:1/1;font-size:13px;border-radius:6px}
+.app.tl .nb .b{width:14px;height:14px;line-height:14px;font-size:9px;top:-6px;right:-6px}
+.app.tl .sc{grid-area:sc;margin:0;font-size:15px;line-height:1.5}
+.app.tl .act{grid-area:act;display:flex;gap:8px;justify-content:flex-end}
+.app.tl .act .fin{width:auto;margin:0!important;padding:8px 12px;font-size:13px}
+.app.tl .body{padding:24px 20px}.app.tl .nav{padding:0 20px 24px}
 </style>
 </head>
 <body>
 <script>window.onerror=function(m,s,l){document.body.insertAdjacentHTML("afterbegin","<pre style=\"color:#b00;padding:8px;white-space:pre-wrap\">Error: "+m+" (baris "+l+")</pre>")}</script>
 <noscript><p style="padding:12px">JavaScript dimatikan di browser ini.</p></noscript>
-<div class="app">
+<div class="app" id="app">
  <aside class="side">
   <div class="nm" id="nm"></div>
   <div class="em" id="em"></div>
   <div class="to" id="to"></div>
   <div class="grid" id="grid"></div>
   <div class="sc">Terjawab: <span id="ter">0</span><br>Kosong: <span id="kos">0</span></div>
-  <button class="fin" id="ed2" style="background:#fff;color:#4a7de8;border:1.5px solid #4a7de8;margin-top:10px">✎ Atur Soal (input soal)</button>
+  <div class="act"><button class="fin" id="ed2" style="background:#fff;color:#4a7de8;border:1.5px solid #4a7de8;margin-top:10px">✎ Atur Soal (input soal)</button><button class="fin" id="lay" style="background:#fff;color:#555;border:1.5px solid #aaa;margin-top:10px">⇄ Tata letak</button></div>
  </aside>
  <section class="main">
   <div class="top">
@@ -110,6 +124,7 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
     </div>
    </div>
   </div>
+  <div class="tnote" id="lk" style="margin:12px 20px 0"></div>
   <div class="body" id="body"></div>
   <div class="nav" id="nav"><button id="pv">← Sebelumnya</button><button class="p" id="nx">Selanjutnya →</button></div>
  </section>
@@ -232,9 +247,9 @@ function soal(){
  if(q.b&&q.b.length){var ba=Array.isArray(A[cur])?A[cur]:[];q.b.forEach(function(st,k){h+='<div class="bsr"><div class="bst">'+fmt(st)+'</div><div class="bsg"><button class="bsb'+(ba[k]===0?' sel':'')+'" data-k="'+k+'" data-v="0">Benar</button><button class="bsb'+(ba[k]===1?' sel':'')+'" data-k="'+k+'" data-v="1">Salah</button></div></div>'})}
  else if(!q.o.length)h+='<input class="isi" id="isi" autocomplete="off" placeholder="Ketik jawabanmu">';
  $('body').innerHTML=h;$('no').textContent=cur+1;
- var ii=$('isi');if(ii){ii.value=typeof A[cur]=='string'?A[cur]:'';ii.oninput=function(){A[cur]=ii.value.trim()===''?-1:ii.value.trim();persist();grid();};}
+ var ii=$('isi');if(ii){ii.disabled=!!FIN;ii.value=typeof A[cur]=='string'?A[cur]:'';ii.oninput=function(){A[cur]=ii.value.trim()===''?-1:ii.value.trim();persist();grid();};}
  $('bmp').setAttribute('fill',M[cur]?'#111':'none');
- $('pv').disabled=cur==0;var last=cur>=Q.length-1;$('nx').disabled=false;$('nx').textContent=last?'Selesai & Salin Jawaban ✓':'Selanjutnya →';
+ $('pv').disabled=cur==0;var last=cur>=Q.length-1;$('nx').disabled=false;$('nx').textContent=last?'Selesai & Salin Jawaban ✓':'Selanjutnya →';lockUi();
  grid();
 }
 function editor(){
@@ -251,7 +266,7 @@ function editor(){
   var nn=parse(ta.value).length;
   if(!nn){$('ct').innerHTML='<b style="color:#c00">0 soal terbaca ('+ta.value.length+' karakter, '+ta.value.split('\n').length+' baris; awal teks: “'+esc(ta.value.slice(0,50))+'”). Tempel soal di kolom besar ini, pakai Soal: lalu pilihan A. B. C.</b>';return}
   D.subject=$('f1').value;D.subchapter=$('f2').value;D.kode=$('f3').value;
-  if(dec(ta.value)!==D.raw){D.raw=dec(ta.value);D.A=[];D.M=[];cur=0}
+  if(dec(ta.value)!==D.raw){D.raw=dec(ta.value);D.A=[];D.M=[];cur=0;tfresh()}
   load();save();edit=false;soal();
  };
 }
@@ -263,7 +278,7 @@ function hasil(){
 }
 $('grid').onclick=function(e){var b=e.target.closest('.nb');if(b){edit=false;cur=+b.dataset.i;soal();}};
 $('body').onclick=function(e){
- if(edit)return;
+ if(edit||FIN)return;
  var bb=e.target.closest('.bsb');if(bb){var k=+bb.dataset.k,v=+bb.dataset.v;if(!Array.isArray(A[cur]))A[cur]=Q[cur].b.map(function(){return-1});A[cur][k]=A[cur][k]===v?-1:v;persist();soal();return}
  var o=e.target.closest('.o');if(o){var n=+o.dataset.n;A[cur]=A[cur]===n?-1:n;persist();soal();}
 };
@@ -272,9 +287,9 @@ $('pv').onclick=function(){if(cur>0){cur--;soal();}};
 $('nx').onclick=function(){if(cur<Q.length-1){cur++;soal();}else if(Q.length){finish();}};
 function openEd(){edit=true;soal();$('body').scrollIntoView({behavior:'smooth'});}
 $('ed').onclick=openEd;$('ed2').onclick=openEd;
-function finish(){$('tnote').style.display='none';$('res').value=hasil();$('ov').classList.add('on');}
+function finish(){if(!FIN&&!confirm('Selesaikan ujian? Timer akan berhenti dan jawaban dikunci.'))return;lockEnd();$('tnote').style.display='none';$('res').value=hasil();$('ov').classList.add('on');}
 $('cl').onclick=function(){$('ov').classList.remove('on');$('tnote').style.display='none'};
-$('rs').onclick=function(){if(confirm('Hapus semua jawaban?')){A=blank();M=Q.map(function(){return false});persist();$('ov').classList.remove('on');soal();}};
+$('rs').onclick=function(){if(confirm('Hapus semua jawaban?')){A=blank();M=Q.map(function(){return false});persist();tfresh();$('ov').classList.remove('on');soal();}};
 $('cp').onclick=function(){
  var t=$('res'),ok=function(){$('cp').textContent='Tersalin ✓'};
  t.focus();t.select();
@@ -286,6 +301,7 @@ var T=D.T||{dur:1800,rem:1800},tstate='idle',tend=0,tick=null,lastSave=0;
 if(!(T.dur>0))T={dur:1800,rem:1800};
 if(!(T.rem>=0)||T.rem>T.dur)T.rem=T.dur;
 tstate=(T.rem>0&&T.rem<T.dur)?'paused':(T.rem<=0?'done':'idle');
+var FIN=(D.F===1);if(FIN&&tstate!='done')tstate='finished';
 function pad(n){return(n<10?'0':'')+n}
 function fmtT(sec){sec=Math.max(0,Math.ceil(sec));var h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return(h?h+':'+pad(m):pad(Math.floor(sec/60)))+':'+pad(s)}
 function saveT(){D.T={dur:T.dur,rem:T.rem};save()}
@@ -299,10 +315,10 @@ function tui(){
  v.textContent=fmtT(T.rem);
  v.className='tmv'+(tstate=='done'?' end':(T.rem<=60&&tstate!='idle'?' warn':''));
  $('tmin').disabled=$('tsec').disabled=tstate!='idle';
- $('tst').textContent={idle:'Siap',running:'Berjalan',paused:'Dijeda',done:'Waktu habis'}[tstate];
+ $('tst').textContent={idle:'Siap',running:'Berjalan',paused:'Dijeda',done:'Waktu habis',finished:'Selesai'}[tstate];
  var g=$('tgo');
- g.textContent={idle:'Mulai',running:'Jeda',paused:'Lanjut',done:'Mulai'}[tstate];
- g.disabled=(tstate=='idle'&&T.dur<=0);
+ g.textContent={idle:'Mulai',running:'Jeda',paused:'Lanjut',done:'Mulai',finished:'Mulai'}[tstate];
+ g.disabled=(tstate=='idle'&&T.dur<=0)||!!FIN;
  document.title=(run||tstate=='paused'?'['+fmtT(T.rem)+'] ':'')+'Simulasi TO UTBK';
 }
 function beep(){
@@ -312,7 +328,7 @@ function beep(){
  }catch(e){}
 }
 function timeUp(){
- clearInterval(tick);tick=null;tstate='done';T.rem=0;saveT();tui();beep();
+ clearInterval(tick);tick=null;tstate='done';T.rem=0;FIN=true;D.F=1;saveT();tui();soal();beep();
  try{if(navigator.vibrate)navigator.vibrate([300,150,300])}catch(e){}
  $('res').value=hasil();$('tnote').style.display='block';$('ov').classList.add('on');
 }
@@ -323,16 +339,31 @@ function loop(){
  tui();
 }
 function tstart(){
+ if(FIN)return;
  if(tstate=='done'||tstate=='idle'&&T.rem<=0)T.rem=T.dur;
  if(tstate=='idle'){T.dur=readInputs();if(T.dur<=0)return;T.rem=T.dur;showInputs()}
  tend=Date.now()+T.rem*1000;tstate='running';
  clearInterval(tick);tick=setInterval(loop,250);saveT();tui();
 }
 function tpause(){clearInterval(tick);tick=null;T.rem=Math.max(0,(tend-Date.now())/1000);tstate='paused';saveT();tui()}
+function tfresh(){
+ FIN=false;D.F=0;clearInterval(tick);tick=null;tstate='idle';
+ if(T.dur<=0)T.dur=1800;T.rem=T.dur;showInputs();saveT();tui();
+}
 function treset(){
  if(tstate=='running'||tstate=='paused'){if(!confirm('Reset timer ke awal?'))return}
- clearInterval(tick);tick=null;tstate='idle';
- if(T.dur<=0)T.dur=1800;T.rem=T.dur;showInputs();saveT();tui();
+ tfresh();soal();
+}
+function lockEnd(){
+ if(tstate=='running')T.rem=Math.max(0,(tend-Date.now())/1000);
+ clearInterval(tick);tick=null;
+ if(tstate!='done')tstate='finished';
+ FIN=true;D.F=1;saveT();tui();soal();
+}
+function lockUi(){
+ var n=$('lk');
+ if(FIN){n.textContent=(tstate=='done'?'⏰ Waktu habis! ':'✓ Ujian selesai. ')+'Jawaban dikunci. Tekan Reset pada timer untuk mengulang.';n.style.display='block'}
+ else n.style.display='none';
 }
 $('tgo').onclick=function(){if(tstate=='running')tpause();else tstart()};
 $('trs').onclick=treset;
@@ -341,6 +372,11 @@ $('tmin').oninput=$('tsec').oninput=onSet;
 $('tmin').onchange=$('tsec').onchange=function(){if(tstate=='idle'){showInputs()}};
 showInputs();tui();
 
+var APP=$('app');
+function lay(){var tl=D.L===undefined?innerWidth<=820:D.L===1;if(tl)APP.classList.add('tl');else APP.classList.remove('tl')}
+$('lay').onclick=function(){D.L=APP.classList.contains('tl')?0:1;save();lay()};
+window.addEventListener('resize',lay);
+lay();
 load();soal();
 </script>
 </body>
