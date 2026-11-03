@@ -108,7 +108,12 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
 .calc{display:none;position:absolute;top:calc(100% - 4px);right:16px;z-index:20;width:296px;max-width:calc(100vw - 32px);background:#fff;border-radius:12px;box-shadow:0 10px 32px rgba(23,52,120,.22),0 1px 3px rgba(0,0,0,.08);overflow:hidden;text-align:left;font-family:'Manrope',system-ui,sans-serif}
 .calc.on{display:block;animation:cpop .14s ease-out}
 @keyframes cpop{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
-.chd{display:flex;align-items:center;justify-content:space-between;background:#4a7de8;color:#fff;padding:9px 12px 9px 14px;font-size:14px;font-weight:600}
+.chd{display:flex;align-items:center;justify-content:space-between;background:#4a7de8;color:#fff;padding:9px 12px 9px 14px;font-size:14px;font-weight:600;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.chd span{display:flex;align-items:center;gap:7px}
+.chd span svg{width:14px;height:14px;opacity:.75}
+.calc.drag .chd{cursor:grabbing}
+.calc.drag{animation:none;box-shadow:0 16px 40px rgba(23,52,120,.3),0 1px 3px rgba(0,0,0,.08)}
+.calc.free{position:fixed}
 .chd button{background:none;border:0;color:#fff;font-size:20px;line-height:1;cursor:pointer;padding:0 2px;opacity:.9}
 .cdp{margin:12px 12px 10px;background:#eef3fd;border:1.5px solid #d3def7;border-radius:8px;padding:8px 10px 8px 12px;display:flex;align-items:flex-end;gap:8px}
 .cdv{flex:1;min-width:0;text-align:right}
@@ -154,7 +159,7 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
     <button class="cbtn" id="cbtn" aria-label="Kalkulator" title="Kalkulator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2.5"/><rect x="7.5" y="5.5" width="9" height="4" rx="1"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01"/></svg></button>
    </div>
    <div class="calc" id="calc" role="dialog" aria-label="Kalkulator">
-    <div class="chd"><span>Kalkulator</span><button id="ccl" aria-label="Tutup kalkulator">×</button></div>
+    <div class="chd" id="chd" title="Geser untuk memindahkan"><span><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>Kalkulator</span><button id="ccl" aria-label="Tutup kalkulator">×</button></div>
     <div class="cdp">
      <div class="cdv"><div class="cex" id="cex"></div><div class="cres" id="cres">0</div></div>
      <button class="cbk" data-k="bk" aria-label="Hapus satu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/><path d="M17 9l-5 6M12 9l5 6"/></svg></button>
@@ -500,7 +505,29 @@ function cOpen(on){
  var c=$('calc'),b=$('cbtn');on=on===undefined?!c.classList.contains('on'):on;
  c.classList.toggle('on',on);b.classList.toggle('on',on);b.setAttribute('aria-expanded',on);
 }
-$('cbtn').onclick=function(e){e.stopPropagation();cOpen()};
+/* geser kalkulator */
+var CP=null;
+function cPlace(x,y){
+ var c=$('calc'),w=c.offsetWidth,h=c.offsetHeight,vw=document.documentElement.clientWidth,vh=window.innerHeight;
+ x=Math.max(4,Math.min(vw-w-4,x));y=Math.max(4,Math.min(vh-Math.min(h,vh-8)-4,y));
+ c.classList.add('free');c.style.left=x+'px';c.style.top=y+'px';c.style.right='auto';CP={x:x,y:y};
+}
+(function(){
+ var hd=$('chd'),c=$('calc'),sx,sy,ox,oy,id=null;
+ hd.addEventListener('pointerdown',function(e){
+  if(e.target.closest('button')||(e.pointerType=='mouse'&&e.button!==0))return;
+  var r=c.getBoundingClientRect();ox=r.left;oy=r.top;sx=e.clientX;sy=e.clientY;id=e.pointerId;
+  cPlace(ox,oy);c.classList.add('drag');
+  try{hd.setPointerCapture(id)}catch(x){}
+  e.preventDefault();
+ });
+ hd.addEventListener('pointermove',function(e){if(e.pointerId!==id)return;cPlace(ox+e.clientX-sx,oy+e.clientY-sy)});
+ function up(e){if(e.pointerId!==id)return;id=null;c.classList.remove('drag');try{hd.releasePointerCapture(e.pointerId)}catch(x){}}
+ hd.addEventListener('pointerup',up);hd.addEventListener('pointercancel',up);
+ hd.addEventListener('dblclick',function(e){if(e.target.closest('button'))return;CP=null;c.classList.remove('free');c.style.left=c.style.top=c.style.right=''});
+ window.addEventListener('resize',function(){if(CP&&c.classList.contains('on'))cPlace(CP.x,CP.y)});
+})();
+$('cbtn').onclick=function(e){e.stopPropagation();cOpen();if(CP&&$('calc').classList.contains('on'))cPlace(CP.x,CP.y)};
 $('ccl').onclick=function(){cOpen(false)};
 $('calc').onclick=function(e){
  var b=e.target.closest('[data-k]');if(b){cKey(b.dataset.k);b.blur();}
