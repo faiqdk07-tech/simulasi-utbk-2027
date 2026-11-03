@@ -456,9 +456,8 @@ function cShow(err){
  r.classList.remove('err');
  if(err){e.textContent=CX;r.textContent='Tidak valid';r.classList.add('err');return}
  if(CDONE){r.textContent=CX;return}
- e.textContent=CX;
- var pv='';try{if(CX&&/[+−×÷√]/.test(CX))pv=cFmt(cEval(CX))}catch(x){}
- r.textContent=pv||CX||'0';
+ e.textContent='';
+ r.textContent=CX||'0';
  r.scrollLeft=r.scrollWidth;e.scrollLeft=e.scrollWidth;
 }
 function cKey(k){
