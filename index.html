@@ -99,6 +99,33 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
 .app.tl .act{grid-area:act;display:flex;gap:8px;justify-content:flex-end}
 .app.tl .act .fin{width:auto;margin:0!important;padding:8px 12px;font-size:13px}
 .app.tl .body{padding:24px 20px}.app.tl .nav{padding:0 20px 24px}
+
+/* ===== Kalkulator mini ===== */
+.top{height:auto;min-height:88px;padding-top:8px;padding-bottom:8px}
+.cbtn{width:30px;height:26px;display:flex;align-items:center;justify-content:center;padding:0;border-radius:6px;border:1.5px solid #4a7de8;background:#fff;color:#4a7de8;cursor:pointer;transition:background .15s,color .15s}
+.cbtn svg{width:16px;height:16px}
+.cbtn.on,.cbtn:hover{background:#4a7de8;color:#fff}
+.calc{display:none;position:absolute;top:calc(100% - 4px);right:16px;z-index:20;width:296px;max-width:calc(100vw - 32px);background:#fff;border-radius:12px;box-shadow:0 10px 32px rgba(23,52,120,.22),0 1px 3px rgba(0,0,0,.08);overflow:hidden;text-align:left;font-family:'Manrope',system-ui,sans-serif}
+.calc.on{display:block;animation:cpop .14s ease-out}
+@keyframes cpop{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+.chd{display:flex;align-items:center;justify-content:space-between;background:#4a7de8;color:#fff;padding:9px 12px 9px 14px;font-size:14px;font-weight:600}
+.chd button{background:none;border:0;color:#fff;font-size:20px;line-height:1;cursor:pointer;padding:0 2px;opacity:.9}
+.cdp{margin:12px 12px 10px;background:#eef3fd;border:1.5px solid #d3def7;border-radius:8px;padding:8px 10px 8px 12px;display:flex;align-items:flex-end;gap:8px}
+.cdv{flex:1;min-width:0;text-align:right}
+.cex{font-size:13px;color:#6b7a99;min-height:18px;white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+.cex::-webkit-scrollbar{display:none}
+.cres{font-size:26px;font-weight:700;color:#111;line-height:1.25;white-space:nowrap;overflow-x:auto;font-variant-numeric:tabular-nums;scrollbar-width:none}
+.cres::-webkit-scrollbar{display:none}
+.cres.err{color:#d32f2f;font-size:20px}
+.cbk{flex:none;width:34px;height:30px;border:0;background:none;color:#4a7de8;cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.cbk:hover{background:#dce6fa}
+.ckeys{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:0 12px 12px}
+.ck{height:42px;border-radius:8px;border:1.5px solid #dde3ef;background:#fff;color:#111;font:600 17px 'Manrope',sans-serif;cursor:pointer;padding:0;transition:background .1s}
+.ck:hover{background:#f4f6fb}.ck:active{background:#e6ecf8}
+.ck.op{background:#e8effc;border-color:#d3def7;color:#2f5fc7}.ck.op:hover{background:#dbe5fa}
+.ck.cl{color:#d32f2f}
+.ck.eq{background:#4a7de8;border-color:#4a7de8;color:#fff}.ck.eq:hover{background:#3d6fd8}
+@media(max-width:820px){.calc{right:8px;top:100%}}
 </style>
 </head>
 <body>
@@ -123,6 +150,21 @@ textarea{width:100%;height:340px;margin-top:6px;padding:12px;border:1px solid #c
     <div class="tmr">
      <div class="tms" id="tms"><input id="tmin" type="number" min="0" max="999" inputmode="numeric" value="30" aria-label="Menit" title="Menit"><span>:</span><input id="tsec" type="number" min="0" max="59" inputmode="numeric" value="0" aria-label="Detik" title="Detik"></div>
      <button class="p" id="tgo">Mulai</button><button id="trs">Reset</button>
+    </div>
+    <button class="cbtn" id="cbtn" aria-label="Kalkulator" title="Kalkulator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2.5"/><rect x="7.5" y="5.5" width="9" height="4" rx="1"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01"/></svg></button>
+   </div>
+   <div class="calc" id="calc" role="dialog" aria-label="Kalkulator">
+    <div class="chd"><span>Kalkulator</span><button id="ccl" aria-label="Tutup kalkulator">×</button></div>
+    <div class="cdp">
+     <div class="cdv"><div class="cex" id="cex"></div><div class="cres" id="cres">0</div></div>
+     <button class="cbk" data-k="bk" aria-label="Hapus satu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/><path d="M17 9l-5 6M12 9l5 6"/></svg></button>
+    </div>
+    <div class="ckeys" id="ckeys">
+     <button class="ck cl" data-k="C">C</button><button class="ck op" data-k="(">(</button><button class="ck op" data-k=")">)</button><button class="ck op" data-k="÷">÷</button>
+     <button class="ck" data-k="7">7</button><button class="ck" data-k="8">8</button><button class="ck" data-k="9">9</button><button class="ck op" data-k="×">×</button>
+     <button class="ck" data-k="4">4</button><button class="ck" data-k="5">5</button><button class="ck" data-k="6">6</button><button class="ck op" data-k="−">−</button>
+     <button class="ck" data-k="1">1</button><button class="ck" data-k="2">2</button><button class="ck" data-k="3">3</button><button class="ck op" data-k="+">+</button>
+     <button class="ck op" data-k="√">√</button><button class="ck" data-k="0">0</button><button class="ck" data-k=".">.</button><button class="ck eq" data-k="=">=</button>
     </div>
    </div>
   </div>
@@ -373,6 +415,105 @@ function onSet(){if(tstate!='idle')return;T.dur=readInputs();T.rem=T.dur;saveT()
 $('tmin').oninput=$('tsec').oninput=onSet;
 $('tmin').onchange=$('tsec').onchange=function(){if(tstate=='idle'){showInputs()}};
 showInputs();tui();
+
+/* ===== KALKULATOR MINI ===== */
+var CX='',CDONE=false;
+function cEval(s){
+ var t=[],i=0,prev=null,m;
+ while(i<s.length){
+  var ch=s[i];
+  if(m=s.slice(i).match(/^(\d+\.?\d*|\.\d+)/)){
+   if(prev&&(prev.n!==undefined||prev.v==')'))t.push({v:'×'});
+   prev={n:parseFloat(m[1])};t.push(prev);i+=m[1].length;continue;
+  }
+  if(ch=='('||ch=='√'){if(prev&&(prev.n!==undefined||prev.v==')'))t.push({v:'×'});}
+  if(ch=='−'&&(!prev||(prev.n===undefined&&prev.v!=')')))ch='u';
+  prev={v:ch};t.push(prev);i++;
+ }
+ var P={'+':1,'−':1,'×':2,'÷':2,'u':3,'√':4},R={'u':1,'√':1},out=[],st=[];
+ t.forEach(function(k){
+  if(k.n!==undefined)out.push(k);
+  else if(k.v=='(')st.push(k);
+  else if(k.v==')'){while(st.length&&st[st.length-1].v!='(')out.push(st.pop());if(!st.length)throw 0;st.pop();}
+  else{if(!P[k.v])throw 0;
+   while(st.length&&st[st.length-1].v!='('&&!R[k.v]&&P[st[st.length-1].v]>=P[k.v])out.push(st.pop());
+   st.push(k);}
+ });
+ while(st.length){var o=st.pop();if(o.v=='(')continue;out.push(o);}
+ var S=[];
+ out.forEach(function(k){
+  if(k.n!==undefined){S.push(k.n);return}
+  if(R[k.v]){if(!S.length)throw 0;var a=S.pop();if(k.v=='u')S.push(-a);else{if(a<0)throw 0;S.push(Math.sqrt(a))}return}
+  if(S.length<2)throw 0;var b=S.pop(),x=S.pop();
+  if(k.v=='+')S.push(x+b);else if(k.v=='−')S.push(x-b);else if(k.v=='×')S.push(x*b);else{if(b===0)throw 0;S.push(x/b)}
+ });
+ if(S.length!=1||!isFinite(S[0]))throw 0;
+ return S[0];
+}
+function cFmt(n){var r=parseFloat(n.toPrecision(12));if(Object.is(r,-0))r=0;var a=Math.abs(r);return(a!==0&&(a>=1e12||a<1e-9))?r.toExponential(6).replace(/\.?0+e/,'e'):String(r)}
+function cShow(err){
+ var e=$('cex'),r=$('cres');
+ r.classList.remove('err');
+ if(err){e.textContent=CX;r.textContent='Tidak valid';r.classList.add('err');return}
+ if(CDONE){r.textContent=CX;return}
+ e.textContent=CX;
+ var pv='';try{if(CX&&/[+−×÷√]/.test(CX))pv=cFmt(cEval(CX))}catch(x){}
+ r.textContent=pv||CX||'0';
+ r.scrollLeft=r.scrollWidth;e.scrollLeft=e.scrollWidth;
+}
+function cKey(k){
+ var last=CX.slice(-1),ops='+−×÷';
+ if(CDONE){
+  if(ops.indexOf(k)>=0){CDONE=false;$('cex').textContent='';}
+  else if(k!='='){CDONE=false;CX='';$('cex').textContent='';}
+ }
+ if(k=='C'){CX='';}
+ else if(k=='bk'){CX=CX.slice(0,-1);}
+ else if(k=='='){
+  if(!CX)return;
+  var opn=(CX.match(/\(/g)||[]).length-(CX.match(/\)/g)||[]).length,ex=CX+Array(Math.max(0,opn)+1).join(')');
+  try{var v=cFmt(cEval(ex));$('cex').textContent=ex+' =';CX=(v.indexOf('e')>=0?Number(v).toLocaleString('en-US',{useGrouping:false,maximumFractionDigits:20}):v).replace('-','−');CDONE=true;$('cres').classList.remove('err');$('cres').textContent=v;}
+  catch(x){cShow(true)}
+  return;
+ }
+ else if(ops.indexOf(k)>=0){
+  if(!CX||last=='('||last=='√'){if(k=='−')CX+=k;}
+  else if(ops.indexOf(last)>=0){
+   if(k=='−'&&(last=='×'||last=='÷'))CX+=k;
+   else{CX=CX.replace(/[+−×÷]+$/,'');if(CX&&!/[(√]$/.test(CX))CX+=k;else if(k=='−')CX+=k;}
+  }
+  else CX+=k;
+ }
+ else if(k=='.'){
+  var seg=CX.match(/[\d.]*$/)[0];
+  if(seg.indexOf('.')<0)CX+=(seg?'':'0')+'.';
+ }
+ else if(k==')'){
+  var o=(CX.match(/\(/g)||[]).length-(CX.match(/\)/g)||[]).length;
+  if(o>0&&/[\d.)]$/.test(CX))CX+=')';
+ }
+ else if(k=='√'){CX+='√(';}
+ else CX+=k;
+ if(CX.length>60)CX=CX.slice(0,60);
+ cShow();
+}
+function cOpen(on){
+ var c=$('calc'),b=$('cbtn');on=on===undefined?!c.classList.contains('on'):on;
+ c.classList.toggle('on',on);b.classList.toggle('on',on);b.setAttribute('aria-expanded',on);
+}
+$('cbtn').onclick=function(e){e.stopPropagation();cOpen()};
+$('ccl').onclick=function(){cOpen(false)};
+$('calc').onclick=function(e){
+ var b=e.target.closest('[data-k]');if(b){cKey(b.dataset.k);b.blur();}
+};
+document.addEventListener('keydown',function(e){
+ if(!$('calc').classList.contains('on'))return;
+ var tg=e.target.tagName;if(tg=='INPUT'||tg=='TEXTAREA')return;
+ var map={'*':'×','x':'×','X':'×','/':'÷',':':'÷','-':'−','+':'+','Enter':'=','=':'=','Backspace':'bk','Delete':'C','c':'C','C':'C','(':'(',')':')','.':'.',',':'.','r':'√'};
+ var k=/^\d$/.test(e.key)?e.key:map[e.key];
+ if(e.key=='Escape'){cOpen(false);return}
+ if(k){e.preventDefault();cKey(k);}
+});
 
 var APP=$('app');
 function lay(){var tl=D.L===undefined?innerWidth<=820:D.L===1;if(tl)APP.classList.add('tl');else APP.classList.remove('tl')}
